@@ -1,2 +1,3 @@
-# pytorch-training-loop
-A customizable PyTorch training loop.
+# PyTorch training loop
+
+
