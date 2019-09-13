@@ -14,4 +14,3 @@ def pbar(value, endvalue, printstrings, printvalues, bar_length = 30):
         sys.stdout.write(" - {}: {}".format(
             printstrings[i],
             printvalues[i]))
-    sys.stdout.flush()

@@ -1,7 +1,7 @@
 import time
 from pbar import pbar
 
-def train(model, trainloader, validloader, loss_function, optimizer, num_epochs):
+def train(model, train_loader, valid_loader, loss_function, optimizer, num_epochs):
     start = time.time()
 
     for epoch in range(1, num_epochs + 1):
@@ -14,7 +14,7 @@ def train(model, trainloader, validloader, loss_function, optimizer, num_epochs)
         train_loss = 0.0
         train_total = 0
 
-        for i, (inputs, targets) in enumerate(trainloader):
+        for i, (inputs, targets) in enumerate(train_loader):
             inputs = inputs.to('cuda' if torch.cuda.is_available() else 'cpu')
             targets = targets.to('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -29,13 +29,13 @@ def train(model, trainloader, validloader, loss_function, optimizer, num_epochs)
             train_loss += loss.item()
             train_total += targets.size(0)
 
-            pbar(i * trainloader.batch_size,
-                 (len(trainloader.dataset) // trainloader.batch_size) * trainloader.batch_size,
+            pbar(i * train_loader.batch_size,
+                 (len(train_loader.dataset) // train_loader.batch_size) * train_loader.batch_size,
                  ['Loss'],
                  [round(loss.item(), 3)])
 
         print('\nTraining - Average Loss: {}'.format(
-            round(train_loss / (train_total / trainloader.batch_size), 3)))
+            round(train_loss / (train_total / train_loader.batch_size), 3)))
 
         model.eval()
 
@@ -43,7 +43,7 @@ def train(model, trainloader, validloader, loss_function, optimizer, num_epochs)
         valid_total = 0
 
         with torch.no_grad():
-            for i, (inputs, targets) in enumerate(validloader):
+            for i, (inputs, targets) in enumerate(valid_loader):
                 inputs = inputs.to('cuda' if torch.cuda.is_available() else 'cpu')
                 targets = targets.to('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -53,13 +53,13 @@ def train(model, trainloader, validloader, loss_function, optimizer, num_epochs)
                 valid_loss += loss.item()
                 valid_total += targets.size(0)
 
-                pbar(i * validloader.batch_size,
-                     (len(validloader.dataset) // validloader.batch_size) * validloader.batch_size,
+                pbar(i * valid_loader.batch_size,
+                     (len(valid_loader.dataset) // valid_loader.batch_size) * valid_loader.batch_size,
                      ['Loss'],
                      [round(loss.item(), 3)])
 
         print('\nValidation - Average Loss: {}'.format(
-            round(valid_loss / (valid_total / validloader.batch_size), 3)))
+            round(valid_loss / (valid_total / valid_loader.batch_size), 3)))
 
         print()
 
