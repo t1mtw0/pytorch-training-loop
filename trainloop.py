@@ -117,4 +117,4 @@ def train(model, train_loader, valid_loader, loss_function, optimizer, num_epoch
     print('Training complete in {:.0f}m {:.0f}s'.format(
         total_time // 60, total_time % 60))
 
-    return model'
+    return model
